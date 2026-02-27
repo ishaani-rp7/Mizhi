@@ -55,3 +55,7 @@ canvas {
   margin-top: 15px;
   font-size: 18px;
 }
+
+video {
+  transform: scaleX(-1);
+}
