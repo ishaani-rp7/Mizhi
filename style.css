@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #5f2c82, #49a09d);
+  color: white;
+  text-align: center;
+}
+
+.container {
+  padding: 20px;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 5px;
+}
+
+.tagline {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background: white;
+  color: #5f2c82;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.video-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+video {
+  width: 500px;
+  border-radius: 15px;
+}
+
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.info {
+  margin-top: 15px;
+  font-size: 18px;
+}
