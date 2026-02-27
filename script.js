@@ -1,5 +1,5 @@
 let model;
-let lastSpoken = "";
+let lastSpokenTime = 0;
 
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
@@ -13,7 +13,9 @@ async function startApp() {
 
   video.onloadedmetadata = async () => {
     video.play();
+    result.innerText = "Loading AI model...";
     model = await cocoSsd.load();
+    result.innerText = "Vision Activated";
     detectObjects();
   };
 }
@@ -28,28 +30,46 @@ async function detectObjects() {
 
   if (predictions.length > 0) {
     const object = predictions[0];
-    const name = object.class;
-    const confidence = (object.score * 100).toFixed(2);
 
-    result.innerText = name + " detected";
-    confidenceText.innerText = "Confidence: " + confidence + "%";
+    const name = object.class;
+    const confidence = (object.score * 100).toFixed(1);
+
+    const [x, y, width, height] = object.bbox;
+    const centerX = x + width / 2;
+
+    let direction = centerX < canvas.width / 2 ? "left" : "right";
+
+    result.innerText = `${name} detected on ${direction}`;
+    confidenceText.innerText = `Confidence: ${confidence}%`;
 
     ctx.beginPath();
-    ctx.rect(...object.bbox);
+    ctx.rect(x, y, width, height);
     ctx.lineWidth = 3;
     ctx.strokeStyle = "lime";
     ctx.stroke();
 
-    if (name !== lastSpoken) {
-      speak(name);
-      lastSpoken = name;
+    // Danger detection (simulate closeness)
+    if (width > 250) {
+      speak("Very close! Stop!");
+    } else {
+      speak(`${name} on ${direction}`);
     }
+  } else {
+    result.innerText = "Path clear";
+    confidenceText.innerText = "";
   }
 
   requestAnimationFrame(detectObjects);
 }
 
 function speak(text) {
-  const speech = new SpeechSynthesisUtterance(text);
-  window.speechSynthesis.speak(speech);
+  const now = Date.now();
+
+  // 3 second cooldown
+  if (now - lastSpokenTime > 3000) {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-IN";
+    window.speechSynthesis.speak(speech);
+    lastSpokenTime = now;
+  }
 }
