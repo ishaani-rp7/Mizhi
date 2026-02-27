@@ -39,13 +39,16 @@ button {
 
 video {
   width: 500px;
+  height: auto;
   border-radius: 15px;
+  display: block;
 }
 
 canvas {
   position: absolute;
   left: 0;
   top: 0;
+  border-radius: 15px;
 }
 
 .info {
